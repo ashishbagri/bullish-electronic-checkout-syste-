@@ -5,20 +5,17 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Discount {
+public class Bucket {
 
     @Id
     @GeneratedValue
     private Long id;
 
-    private String name;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bucket_id")
-    private List<Product> products;
+    private List<Item> items;
 
-    public Discount() {
-    }
+    private double total_price;
 
     public Long getId() {
         return id;
@@ -28,28 +25,28 @@ public class Discount {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public double getTotal_price() {
+        return total_price;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setTotal_price(double total_price) {
+        this.total_price = total_price;
     }
 
     @Override
     public String toString() {
-        return "Discount{" +
+        return "Bucket{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", products=" + products +
+                ", items=" + items +
+                ", total_price=" + total_price +
                 '}';
     }
 
@@ -57,12 +54,12 @@ public class Discount {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Discount discount = (Discount) o;
-        return Objects.equals(id, discount.id) && Objects.equals(name, discount.name) && Objects.equals(products, discount.products);
+        Bucket bucket = (Bucket) o;
+        return Double.compare(bucket.total_price, total_price) == 0 && Objects.equals(id, bucket.id) && Objects.equals(items, bucket.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, products);
+        return Objects.hash(id, items, total_price);
     }
 }
