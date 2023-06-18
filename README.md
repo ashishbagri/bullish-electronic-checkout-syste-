@@ -2,7 +2,7 @@
 Java back-end of a web-based electronics store’s checkout system
 
 * How to build : maven install
-
+* How to test : ./mvnw -Dtest="com.example.assignments.checkoutsystem.**" test
 Two type os Users :
 1. Admin
 
