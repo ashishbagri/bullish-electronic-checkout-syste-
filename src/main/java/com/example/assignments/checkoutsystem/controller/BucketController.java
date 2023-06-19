@@ -38,7 +38,7 @@ public class BucketController {
         return new ResponseEntity<>(bucketRepo.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<Bucket> getBucketById(@PathVariable Long id) {
         Bucket found = bucketRepo.findById(id).orElse(null);
         if (found == null)
@@ -61,8 +61,8 @@ public class BucketController {
 
     }
 
-    @PostMapping("/{id}/items/{id}")
-    public ResponseEntity<Bucket> removeItem(@PathVariable Long id, @RequestBody Item item) {
+    @PostMapping("/{bucket_id}/items/{id}")
+    public ResponseEntity<Bucket> removeItem(@PathVariable Long bucket_id, @PathVariable Long id, @RequestBody Item item) {
         Bucket bucket = bucketRepo.findById(id).orElse(null);
         if(bucket  == null)
             throw new RuntimeException("Bucket not found");

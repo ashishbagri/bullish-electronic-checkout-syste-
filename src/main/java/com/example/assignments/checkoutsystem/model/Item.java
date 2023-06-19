@@ -10,7 +10,7 @@ public class Item {
     @GeneratedValue
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "product_id")
     private Product product;
     private int quantity;
     private double total;
