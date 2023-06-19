@@ -3,6 +3,7 @@ package com.example.assignments.checkoutsystem.controller;
 import com.example.assignments.checkoutsystem.model.Bucket;
 import com.example.assignments.checkoutsystem.model.Item;
 import com.example.assignments.checkoutsystem.repo.BucketRepo;
+import com.example.assignments.checkoutsystem.repo.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,9 @@ public class BucketController {
     @Autowired
     private BucketRepo bucketRepo;
 
+    @Autowired
+    private ItemRepository itemRepository;
+
     @GetMapping
     public ResponseEntity<Iterable<Bucket>> getAllBuckets(){
         return new ResponseEntity<>(bucketRepo.findAll(), HttpStatus.OK);
@@ -46,9 +50,13 @@ public class BucketController {
         return new ResponseEntity<>(found, HttpStatus.OK);
     }
 
+    @PostMapping
+    public ResponseEntity<Bucket> createBucket(@RequestBody Bucket bucket){
+        return new ResponseEntity<>(bucketRepo.save(bucket), HttpStatus.ACCEPTED);
+    }
+
     @PostMapping("/{id}/items")
     public ResponseEntity<Bucket> addProduct(@PathVariable Long id, @RequestBody Item item) {
-
         Bucket bucket = bucketRepo.findById(id).orElse(null);
         if(bucket  == null)
             throw new RuntimeException("Bucket not found");
@@ -56,7 +64,8 @@ public class BucketController {
         if(items == null) {
             items = new ArrayList<>();
         }
-        items.add(item);
+        Item saved = itemRepository.save(Item.of(item.getProductId(), item.getQuantity(), item.getTotal()));
+        items.add(saved);
         return new ResponseEntity<>(bucket, HttpStatus.OK);
 
     }

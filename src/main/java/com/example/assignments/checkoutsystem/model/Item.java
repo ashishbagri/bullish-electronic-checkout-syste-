@@ -9,9 +9,10 @@ public class Item {
     @Id
     @GeneratedValue
     private Long id;
-    @ManyToOne
+
     @JoinColumn(name = "product_id")
-    private Product product;
+    private Long productId;
+
     private int quantity;
     private double total;
 
@@ -21,14 +22,6 @@ public class Item {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
 
     public int getQuantity() {
@@ -47,11 +40,19 @@ public class Item {
         this.total = total;
     }
 
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
                 "id=" + id +
-                ", product=" + product +
+                ", productId=" + productId +
                 ", quantity=" + quantity +
                 ", total=" + total +
                 '}';
@@ -62,11 +63,19 @@ public class Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return quantity == item.quantity && Double.compare(item.total, total) == 0 && Objects.equals(id, item.id) && Objects.equals(product, item.product);
+        return quantity == item.quantity && Double.compare(item.total, total) == 0 && Objects.equals(id, item.id) && Objects.equals(productId, item.productId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, product, quantity, total);
+        return Objects.hash(id, productId, quantity, total);
+    }
+
+    public static Item of(Long productId, int quantity, double  total ){
+        Item item = new Item();
+        item.setProductId(productId);
+        item.setQuantity(quantity);
+        item.setTotal(total);
+        return item;
     }
 }
